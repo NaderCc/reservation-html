@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>لوحة التحكم</title>
+</head>
+<body class="flex h-screen bg-gray-100">
+
+    <div class="w-64 bg-gray-800 text-white p-5">
+        <h2 class="text-xl font-bold mb-8">لوحة التحكم</h2>
+        <nav class="space-y-4">
+            <button onclick="loadWallet()" class="w-full text-right p-2 hover:bg-gray-700">المحفظة (Wallet)</button>
+        </nav>
+    </div>
+
+    <div class="flex-1 p-10">
+        <h1 id="contentTitle" class="text-3xl font-bold mb-6">مرحباً بك</h1>
+        <div id="contentArea" class="bg-white p-6 rounded shadow">
+            اختر "المحفظة" من القائمة الجانبية لعرض رصيدك.
+        </div>
+    </div>
+
+    <script>
+        async function loadWallet() {
+            const contentArea = document.getElementById('contentArea');
+            document.getElementById('contentTitle').innerText = 'بيانات المحفظة';
+            
+            try {
+		const myToken = localStorage.getItem('token');
+		console.log("Token Value:", myToken);
+                const response = await fetch('http://3.70.131.171/wallet/balance', {
+                    headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
+                });
+                const result = await response.json();
+                const wallet = result.data;
+                
+                contentArea.innerHTML = `
+                    <table class="w-full text-right border-collapse border border-gray-200">
+                        <tr class="bg-gray-100"><th class="p-3 border">البيان</th><th class="p-3 border">التفاصيل</th></tr>
+                        <tr><td class="p-3 border font-semibold">الرصيد</td><td class="p-3 border">${wallet.balance}</td></tr>
+                        <tr><td class="p-3 border font-semibold">تاريخ الإنشاء</td><td class="p-3 border">${new Date(wallet.created_at).toLocaleDateString()}</td></tr>
+                    </table>
+                `;
+            } catch (err) {
+                contentArea.innerHTML = '<p class="text-red-500">حدث خطأ في تحميل البيانات، تأكد من تسجيل الدخول.</p>';
+            }
+        }
+    </script>
+</body>
+</html>

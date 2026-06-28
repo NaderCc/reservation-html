@@ -6,7 +6,6 @@
     <title>تسجيل الدخول</title>
 </head>
 <body class="bg-gray-100 flex items-center justify-center h-screen">
-
     <div class="bg-white p-8 rounded-lg shadow-lg w-96">
         <h2 class="text-2xl font-bold mb-6 text-center text-gray-800">تسجيل الدخول</h2>
         <form id="loginForm">
@@ -28,17 +27,18 @@
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            const response = await fetch('http://3.70.131.171/login', {
+            const response = await fetch('http://3.70.131.171/auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })
             });
 
             if (response.ok) {
-                alert('تم الدخول بنجاح!');
-                window.location.href = '/dashboard.html';
+                const data = await response.json();
+                localStorage.setItem('token', data.token); // حفظ التوكين
+                window.location.href = 'dashboard.html';
             } else {
-                alert('خطأ في البيانات!');
+                alert('خطأ: تأكد من اسم المستخدم وكلمة المرور');
             }
         });
     </script>

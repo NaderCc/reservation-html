@@ -27,11 +27,12 @@
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            const response = await fetch('http://3.70.131.171/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ username, password })
-            });
+            // غير الرابط ده من الـ IP المباشر إلى مسار الكوبري
+	        const response = await fetch('/api/proxy/auth/login', {
+    		method: 'POST',
+    		headers: { 'Content-Type': 'application/json' },
+    		body: JSON.stringify({ username, password })
+		});
 
             if (response.ok) {
                 const data = await response.json();

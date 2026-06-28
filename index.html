@@ -28,11 +28,11 @@
             const password = document.getElementById('password').value;
 
             // غير الرابط ده من الـ IP المباشر إلى مسار الكوبري
-	        const response = await fetch('/api/proxy/auth/login', {
-    		method: 'POST',
-    		headers: { 'Content-Type': 'application/json' },
-    		body: JSON.stringify({ username, password })
-		});
+	        const response = await fetch('/api/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password })
+});
 
             if (response.ok) {
                 const data = await response.json();

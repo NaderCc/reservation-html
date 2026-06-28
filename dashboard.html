@@ -27,9 +27,7 @@
             document.getElementById('contentTitle').innerText = 'بيانات المحفظة';
             
             try {
-		const myToken = localStorage.getItem('token');
-		console.log("Token Value:", myToken);
-                const response = await fetch('http://3.70.131.171/wallet/balance', {
+		const response = await fetch('http://3.70.131.171/wallet/balance', {
                     headers: { 'Authorization': 'Bearer ' + localStorage.getItem('token') }
                 });
                 const result = await response.json();

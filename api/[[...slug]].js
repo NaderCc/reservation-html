@@ -1,12 +1,11 @@
-// api/[[...slug]].js
-
 export default async function handler(req, res) {
-  const { slug = [] } = req.query;
+  const slug = req.query.slug || [];
 
-  // مثال:
-  // /api/auth/login
-  // => http://3.70.131.171/auth/login
-  const targetUrl = `http://3.70.131.171/${slug.join("/")}`;
+  const path = Array.isArray(slug)
+    ? slug.join("/")
+    : slug;
+
+  const targetUrl = `http://3.70.131.171/${path}`;
 
   try {
     const response = await fetch(targetUrl, {
@@ -15,24 +14,17 @@ export default async function handler(req, res) {
         "Content-Type": "application/json",
       },
       body:
-        req.method !== "GET"
+        req.method !== "GET" && req.method !== "HEAD"
           ? JSON.stringify(req.body)
           : undefined,
     });
 
     const text = await response.text();
 
-    res.status(response.status);
-
-    try {
-      res.json(JSON.parse(text));
-    } catch {
-      res.send(text);
-    }
+    res.status(response.status).send(text);
   } catch (err) {
     res.status(500).json({
-      error: "Proxy Error",
-      message: err.message,
+      error: err.message,
     });
   }
 }

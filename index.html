@@ -28,7 +28,7 @@
             const password = document.getElementById('password').value;
 
             // غير الرابط ده من الـ IP المباشر إلى مسار الكوبري
-	        const response = await fetch('/api/auth/login', {
+	        const response = await fetch('http://3.70.131.171/auth/login', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password })
